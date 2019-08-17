@@ -43,6 +43,30 @@ public:
 private:
   const String& code;
   std::size_t pos;
+  std::size_t line;
+  std::size_t col;
+
+  void _advance(int n) {
+    std::size_t len = code.length();
+    for (int i = 0; i < n; i++) {
+      if (pos >= len)
+        return;
+      if (code[pos] == '\n') {
+        line++;
+        col = 0;
+      } else {
+        col++;
+      }
+      pos++;
+    }
+  }
+
+  void _skip_whitespace() {
+    std::size_t len = code.length();
+    while ((pos < len) && (std::isspace(code[pos]))) {
+      _advance(1);
+    }
+  }
 
   result_type _parse_atom() {
     std::size_t len = code.length();
@@ -51,7 +75,7 @@ private:
 
     String name = "";
     while (issymbolchar(code[pos])) {
-      ++pos;
+      _advance(1);
       if (pos >= len)
         return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
       name += code[pos];
@@ -61,17 +85,13 @@ private:
 
   result_type _parse_list_inside(char close_paren) {
     std::size_t len = code.length();
+    _skip_whitespace();
     if (pos >= len)
       return { close_paren == '\0' ? LISP_OK : LISP_UNEXPECTED_EOF, memnew(NilAtom) };
 
-    while (std::isspace(code[pos])) {
-      ++pos;
-      if (pos >= len)
-        return { close_paren == '\0' ? LISP_OK : LISP_UNEXPECTED_EOF, memnew(NilAtom) };
-    }
-
     if (code[pos] == ')' || code[pos] == ']') {
-      if (code[pos++] == close_paren)
+      _advance(1);
+      if (code[pos - 1] == close_paren)
         return { LISP_OK, memnew(NilAtom) };
       else
         return { close_paren == '\0' ? LISP_UNEXPECTED_CLOSE_PAREN : LISP_INCORRECT_CLOSE_PAREN,
@@ -91,17 +111,13 @@ private:
 
   result_type _parse() {
     std::size_t len = code.length();
+    _skip_whitespace();
     if (pos >= len)
       return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
 
-    while (std::isspace(code[pos])) {
-      ++pos;
-      if (pos >= len)
-        return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
-    }
-
     if (code[pos] == '(' || code[pos] == '[') {
-      return _parse_list_inside(code[pos++] == '(' ? ')' : ']');
+      _advance(1);
+      return _parse_list_inside(code[pos - 1] == '(' ? ')' : ']');
     } else {
       return _parse_atom();
     }
@@ -110,10 +126,14 @@ private:
 
 public:
 
-  ParseEngine(const String& code) : code(code), pos(0) {}
+  ParseEngine(const String& code) : code(code), pos(0), line(0), col(0) {}
 
   result_type parse() {
     return _parse_list_inside('\0');
+  }
+
+  std::pair<std::size_t, std::size_t> position_in_code() {
+    return { line, col };
   }
 
 };
@@ -122,8 +142,8 @@ ParseResult parse_lisp(const String& code) {
   ParseEngine parser { code };
   auto result = parser.parse();
   if (result.first == LISP_OK) {
-    return { OK, "", result.second };
+    return { OK, {-1, -1}, "", result.second };
   } else {
-    return { ERR_PARSE_ERROR, error_text(result.first), result.second };
+    return { ERR_PARSE_ERROR, parser.position_in_code(), error_text(result.first), result.second };
   }
 }

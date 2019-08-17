@@ -138,14 +138,14 @@ bool GDLispScriptLanguage::validate(const String& script,
                                     Set<int>* safe_lines) const {
 
   auto result = parse_lisp(script);
-  std::cout << "OK? " << ((result.error == OK) ? "true" : "false") << std::endl;
   if (result.error != OK) {
-    // TODO Error location
-    error_line = 0;
-    error_column = 0;
+    // Ahhhhh it's all one-indexed!
+    error_line = result.error_pos.first + 1;
+    error_column = result.error_pos.second + 1;
     error_message = String(result.error_text);
     return false;
   }
+  // TODO Add functions and warnings (maybe safe lines? idk)
   return true;
 
 }
