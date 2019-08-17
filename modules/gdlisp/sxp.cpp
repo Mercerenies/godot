@@ -1,4 +1,18 @@
 
 #include "sxp.hpp"
 
-// Erm, nothing here right now.
+SxpType Sxp::get_type() const {
+  return SxpType::UNKNOWN;
+}
+
+SxpType Cons::get_type() const {
+  return SxpType::CONS;
+}
+
+SxpType NilAtom::get_type() const {
+  return SxpType::NIL;
+}
+
+SxpType SymbolAtom::get_type() const {
+  return SxpType::SYMBOL;
+}
