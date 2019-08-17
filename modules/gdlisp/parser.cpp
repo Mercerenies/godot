@@ -30,7 +30,7 @@ const char* error_text(LispParseError err) {
 bool issymbolchar(char a) {
   if (std::isspace(a))
     return false;
-  if (std::strchr("[()]", a))
+  if (std::strchr("[()];", a))
     return false;
 
   return true; // TODO Refine meeeeeeeeeeee
@@ -61,10 +61,28 @@ private:
     }
   }
 
+  void _skip_to_end_of_line() {
+    std::size_t len = code.length();
+    while (pos < len) {
+      if (code[pos] == '\n')
+        break;
+      _advance(1);
+    }
+    _advance(1);
+  }
+
   void _skip_whitespace() {
     std::size_t len = code.length();
-    while ((pos < len) && (std::isspace(code[pos]))) {
-      _advance(1);
+    while (pos < len) {
+      if (!std::isspace(code[pos])) {
+        // Is it a comment?
+        if (code[pos] == ';')
+          _skip_to_end_of_line();
+        else
+          break;
+      } else {
+        _advance(1);
+      }
     }
   }
 
