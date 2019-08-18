@@ -5,11 +5,19 @@
 SxpIterator::SxpIterator(Ref<Sxp> ref) : ref(ref) {}
 
 Ref<Sxp> SxpIterator::operator*() const {
-  return ref;
+  auto cons = checked_cast<Cons>(ref);
+  if (cons == nullptr)
+    // Past end of iterator, UB
+    return Ref<Sxp>();
+  return cons->car;
 }
 
 Ref<Sxp> SxpIterator::operator->() const {
-  return ref;
+  auto cons = checked_cast<Cons>(ref);
+  if (cons == nullptr)
+    // Past end of iterator, UB
+    return Ref<Sxp>();
+  return cons->car;
 }
 
 SxpIterator& SxpIterator::operator++() {

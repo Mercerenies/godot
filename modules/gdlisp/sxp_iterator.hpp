@@ -26,4 +26,6 @@ const SxpIterator& begin(const SxpIterator& a);
 
 SxpIterator end(const SxpIterator& a);
 
+//Vector< Ref<Sxp> > sxp_to_vector(
+
 #endif // GDLISP_SXP_ITERATOR_HPP
