@@ -35,6 +35,10 @@ SxpIterator SxpIterator::operator++(int) {
   return tmp;
 }
 
+Ref<Sxp> SxpIterator::get_remainder() const {
+  return ref;
+}
+
 bool operator==(const SxpIterator& a, const SxpIterator& b) {
   auto cons_a = checked_cast<Cons>(a.ref);
   auto cons_b = checked_cast<Cons>(b.ref);
@@ -56,4 +60,14 @@ const SxpIterator& begin(const SxpIterator& a) {
 
 SxpIterator end(const SxpIterator&) {
   return SxpIterator(Ref<Sxp>(memnew(NilAtom())));
+}
+
+void sxp_to_dotted(Ref<Sxp> sxp, DottedList& out) {
+  SxpIterator it = begin(SxpIterator(sxp));
+  SxpIterator it1 = end(SxpIterator(sxp));
+  out = DottedList();
+  while (it != it1) {
+    out.list.push_back(*it);
+  }
+  out.tail = it.get_remainder();
 }
