@@ -16,3 +16,5 @@ SxpType NilAtom::get_type() const {
 SxpType SymbolAtom::get_type() const {
   return SxpType::SYMBOL;
 }
+
+Ref<NilAtom> Nil;

@@ -39,4 +39,6 @@ struct SymbolAtom : Sxp {
   virtual SxpType get_type() const;
 };
 
+extern Ref<NilAtom> Nil;
+
 #endif // GDLISP_SXP_HPP

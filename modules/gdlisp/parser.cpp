@@ -89,13 +89,13 @@ private:
   result_type _parse_atom() {
     std::size_t len = code.length();
     if (pos >= len)
-      return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
+      return { LISP_UNEXPECTED_EOF, Nil };
 
     String name = "";
     while (issymbolchar(code[pos])) {
       _advance(1);
       if (pos >= len)
-        return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
+        return { LISP_UNEXPECTED_EOF, Nil };
       name += code[pos];
     }
     return { LISP_OK, memnew(SymbolAtom(name)) };
@@ -105,23 +105,23 @@ private:
     std::size_t len = code.length();
     _skip_whitespace();
     if (pos >= len)
-      return { close_paren == '\0' ? LISP_OK : LISP_UNEXPECTED_EOF, memnew(NilAtom) };
+      return { close_paren == '\0' ? LISP_OK : LISP_UNEXPECTED_EOF, Nil };
 
     if (code[pos] == ')' || code[pos] == ']') {
       _advance(1);
       if (code[pos - 1] == close_paren)
-        return { LISP_OK, memnew(NilAtom) };
+        return { LISP_OK, Nil };
       else
         return { close_paren == '\0' ? LISP_UNEXPECTED_CLOSE_PAREN : LISP_INCORRECT_CLOSE_PAREN,
-                 memnew(NilAtom) };
+                 Nil };
     }
 
     auto car = _parse();
     if (car.first != LISP_OK)
-      return { car.first, memnew(NilAtom) };
+      return { car.first, Nil };
     auto cdr = _parse_list_inside(close_paren);
     if (cdr.first != LISP_OK)
-      return { cdr.first, memnew(Cons(car.second, memnew(NilAtom))) };
+      return { cdr.first, memnew(Cons(car.second, Nil)) };
 
     return { LISP_OK, memnew(Cons(car.second, cdr.second)) };
 
@@ -131,7 +131,7 @@ private:
     std::size_t len = code.length();
     _skip_whitespace();
     if (pos >= len)
-      return { LISP_UNEXPECTED_EOF, memnew(NilAtom) };
+      return { LISP_UNEXPECTED_EOF, Nil };
 
     if (code[pos] == '(' || code[pos] == '[') {
       _advance(1);

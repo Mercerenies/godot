@@ -59,7 +59,7 @@ const SxpIterator& begin(const SxpIterator& a) {
 }
 
 SxpIterator end(const SxpIterator&) {
-  return SxpIterator(Ref<Sxp>(memnew(NilAtom())));
+  return SxpIterator(Nil);
 }
 
 void sxp_to_dotted(Ref<Sxp> sxp, DottedList& out) {
