@@ -2,6 +2,7 @@
 #include "lisp.hpp"
 #include "parser.hpp"
 #include "sxp_iterator.hpp"
+#include "function.hpp"
 
 #include <iostream>
 
@@ -148,11 +149,12 @@ bool GDLispScriptLanguage::validate(const String& script,
   }
 
   // Functions (TODO)
-  //int a = 0;
   for (const Ref<Sxp>& sxp : SxpIterator(result.result)) {
-    //a++;
+    GDLispFunction fn;
+    if (read_as_function(sxp, fn)) {
+      functions->push_back(fn.name);
+    }
   }
-  //std::cout << a << std::endl;
 
   // TODO Add warnings (maybe safe lines? idk)
   return true;
