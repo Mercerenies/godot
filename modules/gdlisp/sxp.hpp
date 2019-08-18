@@ -1,6 +1,6 @@
 
-#ifndef SXP_HPP
-#define SXP_HPP
+#ifndef GDLISP_SXP_HPP
+#define GDLISP_SXP_HPP
 
 #include "core/ustring.h"
 #include "core/reference.h"
@@ -39,4 +39,4 @@ struct SymbolAtom : Sxp {
   virtual SxpType get_type() const;
 };
 
-#endif // SXP_HPP
+#endif // GDLISP_SXP_HPP

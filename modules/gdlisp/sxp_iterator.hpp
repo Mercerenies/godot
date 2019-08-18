@@ -1,6 +1,6 @@
 
-#ifndef SXP_ITERATOR_HPP
-#define SXP_ITERATOR_HPP
+#ifndef GDLISP_SXP_ITERATOR_HPP
+#define GDLISP_SXP_ITERATOR_HPP
 
 #include "sxp.hpp"
 
@@ -26,4 +26,4 @@ const SxpIterator& begin(const SxpIterator& a);
 
 SxpIterator end(const SxpIterator& a);
 
-#endif // SXP_ITERATOR_HPP
+#endif // GDLISP_SXP_ITERATOR_HPP

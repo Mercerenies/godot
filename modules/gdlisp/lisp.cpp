@@ -171,7 +171,7 @@ bool GDLispScriptLanguage::supports_builtin_mode() const {
   return true;
 }
 
-int GDLispScriptLanguage::find_function(const String&, const String&) const {
+int GDLispScriptLanguage::find_function(const String& func_name, const String& code) const {
   return -1; // ???
 }
 

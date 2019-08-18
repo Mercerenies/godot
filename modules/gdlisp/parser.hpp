@@ -1,6 +1,6 @@
 
-#ifndef PARSER_HPP
-#define PARSER_HPP
+#ifndef GDLISP_PARSER_HPP
+#define GDLISP_PARSER_HPP
 
 #include "sxp.hpp"
 
@@ -16,4 +16,4 @@ struct ParseResult {
 
 ParseResult parse_lisp(const String& code);
 
-#endif // PARSER_HPP
+#endif // GDLISP_PARSER_HPP

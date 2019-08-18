@@ -1,6 +1,6 @@
 
-#ifndef LISP_HPP
-#define LISP_HPP
+#ifndef GDLISP_LISP_HPP
+#define GDLISP_LISP_HPP
 
 #include "core/script_language.h"
 
@@ -124,4 +124,4 @@ public:
 
 };
 
-#endif // LISP_HPP
+#endif // GDLISP_LISP_HPP

@@ -1,6 +1,6 @@
 
-#ifndef SXP_CAST_HPP
-#define SXP_CAST_HPP
+#ifndef GDLISP_SXP_CAST_HPP
+#define GDLISP_SXP_CAST_HPP
 
 #include "sxp.hpp"
 
@@ -36,4 +36,4 @@ Ref<T> checked_cast(Ref<Sxp> ref) {
 }
 
 
-#endif // SXP_CAST_HPP
+#endif // GDLISP_SXP_CAST_HPP
