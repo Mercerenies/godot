@@ -93,10 +93,10 @@ private:
 
     String name = "";
     while (issymbolchar(code[pos])) {
-      _advance(1);
       if (pos >= len)
         return { LISP_UNEXPECTED_EOF, Nil };
       name += code[pos];
+      _advance(1);
     }
     return { LISP_OK, memnew(SymbolAtom(name)) };
   }
