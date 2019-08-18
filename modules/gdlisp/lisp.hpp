@@ -50,6 +50,10 @@ public:
 };
 
 class GDLispScriptLanguage : public ScriptLanguage {
+private:
+
+  Map<StringName, Variant> globals;
+
 public:
 
   static GDLispScriptLanguage instance;

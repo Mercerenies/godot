@@ -1,6 +1,7 @@
 
 #include "lisp.hpp"
 #include "parser.hpp"
+#include "sxp_iterator.hpp"
 
 #include <iostream>
 
@@ -145,7 +146,15 @@ bool GDLispScriptLanguage::validate(const String& script,
     error_message = String(result.error_text);
     return false;
   }
-  // TODO Add functions and warnings (maybe safe lines? idk)
+
+  // Functions (TODO)
+  //int a = 0;
+  for (const Ref<Sxp>& sxp : SxpIterator(result.result)) {
+    //a++;
+  }
+  //std::cout << a << std::endl;
+
+  // TODO Add warnings (maybe safe lines? idk)
   return true;
 
 }
@@ -166,16 +175,25 @@ int GDLispScriptLanguage::find_function(const String&, const String&) const {
   return -1; // ???
 }
 
-String GDLispScriptLanguage::make_function(const String&, const String&, const PoolStringArray&) const {
-  return String(); // ???
+String GDLispScriptLanguage::make_function(const String& _class,
+                                           const String& name,
+                                           const PoolStringArray& args) const {
+  String s = "(defun " + name + " (";
+  for (int i = 0; i < args.size(); i++) {
+    if (i > 0)
+      s += " ";
+    s += args[i];
+  }
+  s += ")\n  ; Insert function body here\n)";
+  return s;
 }
 
 void GDLispScriptLanguage::auto_indent_code(String&, int, int) const {
   // ???
 }
 
-void GDLispScriptLanguage::add_global_constant(const StringName&, const Variant&) {
-  // ???
+void GDLispScriptLanguage::add_global_constant(const StringName& name, const Variant& value) {
+  globals[name] = value;
 }
 
 String GDLispScriptLanguage::debug_get_error() const {
