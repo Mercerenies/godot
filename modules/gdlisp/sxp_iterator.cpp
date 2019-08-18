@@ -68,6 +68,7 @@ void sxp_to_dotted(Ref<Sxp> sxp, DottedList& out) {
   out = DottedList();
   while (it != it1) {
     out.list.push_back(*it);
+    ++it;
   }
   out.tail = it.get_remainder();
 }
